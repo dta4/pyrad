@@ -710,6 +710,18 @@ class AuthPacket(Packet):
 
         return header + attr
 
+    def _EncodeValue(self, attr, value):
+        if attr.encrypt == 1:
+            value = self.PwCrypt(value)
+
+        return super()._EncodeValue(attr, value)
+
+    def _DecodeValue(self, attr, value):
+        if attr.encrypt == 1:
+            value = self.PwDecrypt(value).encode()
+            
+        return super()._DecodeValue(attr, value)
+
     def PwDecrypt(self, password):
         """De-Obfuscate a RADIUS password. RADIUS hides passwords in packets by
         using an algorithm based on the MD5 hash of the packet authenticator

@@ -539,6 +539,11 @@ class AuthPacketTests(unittest.TestCase):
         self.assertEqual(self.packet.PwDecrypt(
                 b'\xd3U;\xb23\r\x11\xba\x07\xe3\xa8*\xa8x\x14\x01'),
                 'Simplon')
+    
+    def testPwEncryptDecrypt(self):
+        self.packet.AddAttribute('Test-PwCrypted-String', 'test')
+        got = self.packet['Test-PwCrypted-String'][0]
+        self.assertEqual(got, 'test')
 
 
 class AuthPacketChapTests(unittest.TestCase):
